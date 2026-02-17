@@ -1,1 +1,58 @@
+name: Build APK
 
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Grant execute permission to gradlew
+        run: chmod +x gradlew
+
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: NetworkMonitor-debug
+          path: app/build/outputs/apk/debug/app-debug.apk
+```
+
+4. Click **"Commit new file"**
+
+---
+
+## Step 3 — Download your APK
+
+1. Click the **"Actions"** tab at the top of your repo
+2. You'll see a workflow running — wait **3–5 minutes** for it to finish
+3. Click on the completed run → scroll down to **"Artifacts"**
+4. Click **"NetworkMonitor-debug"** to download your APK ✅
+
+---
+
+## Visual guide of the tabs:
+```
+Your Repo
+├── 📁 Code          ← your files are here
+├── ⚡ Actions       ← build runs here
+├── 🔧 Settings
+└── ...
+
+Actions Tab:
+  ✅ Build APK  (completed 2 min ago)
+     └── Artifacts
+           └── 📦 NetworkMonitor-debug.zip  ← click to download
